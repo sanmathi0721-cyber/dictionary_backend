@@ -12,10 +12,13 @@ def define_word(word):
     response = requests.get(api_url)
 
     if response.status_code == 200:
-        return jsonify(response.json())  # Send raw data
+        data = response.json()
+        definition = data[0]['meanings'][0]['definitions'][0]['definition']
+        return jsonify({"definition": definition})
     else:
         return jsonify({"error": "Word not found"}), 404
 
 if __name__ == '__main__':
+    # ✅ Render sets the port in an environment variable
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
